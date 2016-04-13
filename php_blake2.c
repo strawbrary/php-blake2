@@ -8,6 +8,9 @@
 #include "blake2.h"
 #include "php_blake2.h"
 
+#define PHP_BLAKE2_NAME "BLAKE2"
+#define PHP_BLAKE2_VERSION "0.1.0"
+
 zend_function_entry blake2_functions[] = {
     PHP_FE(blake2, NULL)
     {NULL, NULL, NULL}
@@ -17,7 +20,7 @@ zend_module_entry blake2_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
     STANDARD_MODULE_HEADER,
 #endif
-    PACKAGE_NAME,
+    PHP_BLAKE2_NAME,
     blake2_functions,
     NULL,
     NULL,
@@ -25,7 +28,7 @@ zend_module_entry blake2_module_entry = {
     NULL,
     NULL,
 #if ZEND_MODULE_API_NO >= 20010901
-    PACKAGE_VERSION,
+    PHP_BLAKE2_VERSION,
 #endif
     STANDARD_MODULE_PROPERTIES
 };

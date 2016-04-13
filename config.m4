@@ -1,6 +1,3 @@
-AC_DEFINE(PACKAGE_NAME, "BLAKE2")
-AC_DEFINE(PACKAGE_VERSION, "0.1")
-
 PHP_ARG_ENABLE(blake2,
 [Whether to enable BLAKE2 support],
 [--enable-blake2           Enable BLAKE2 Extension])
