@@ -78,7 +78,7 @@ PHP_FUNCTION(blake2)
 
     char hashOutput[hashByteLength];
 
-    int result = blake2b(hashOutput, data, key, hashByteLength, dataByteLength, keyLength);
+    int result = blake2b(hashOutput, hashByteLength, data, dataByteLength, key, keyLength);
 
     if (result != 0) {
         zend_error(E_WARNING, "Error generating BLAKE2 hash");
