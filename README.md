@@ -7,18 +7,23 @@ BLAKE2 is an improved version of BLAKE, one the finalists in the NIST SHA-3 comp
 
 Installation
 ------------
-1. git clone https://github.com/strawbrary/php-blake2
-1. cd php-blake2
-1. phpize
-1. ./configure --enable-blake2
-1. make && make install
-1. Add the following line to your php.ini file
-
+Clone the repository and compile it:
+```sh
+$ git clone git@github.com:strawbrary/php-blake2.git
+$ cd php-blake2
+$ phpize
+$ ./configure --enable-blake2
+$ make && sudo make install
 ```
+
+Enable the extension by adding the following line to your php.ini file:
+
+```sh
 extension=blake2.so
 ```
 
-You may need to restart your httpd to load the extension
+You may need to restart your web server to load the extension.
+
 
 Usage
 ----
@@ -32,6 +37,19 @@ string blake2 ( string $str [, int $outputSize = 64, string $key, bool $rawOutpu
 * $rawOutput: If set to true, then the hash is returned in raw binary format
 
 * Return value: A hex string containing the BLAKE2 hash of the input string
+
+
+```php
+string blake2s ( string $str [, int $outputSize = 32, string $key, bool $rawOutput = false ] )
+```
+
+* $str: The string to hash
+* $outputSize: The length of the output hash (can be between 1 and 32)
+* $key: Turns the output into a keyed hash using the specified key
+* $rawOutput: If set to true, then the hash is returned in raw binary format
+
+* Return value: A hex string containing the BLAKE2s hash of the input string
+
 
 Examples
 --------
@@ -52,6 +70,13 @@ echo blake2('Hello world', 20, 'foobar');
 ```
 
 5b4bbc84b59ab5d9146089b143fd52f38638dcac
+
+
+```php
+echo blake2s('');
+```
+
+Outputs : 69217a3079908094e11121d042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9
 
 More Info
 ---------
