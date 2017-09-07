@@ -13,6 +13,7 @@
 
 zend_function_entry blake2_functions[] = {
     PHP_FE(blake2, NULL)
+    PHP_FALIAS(blake2b, blake2, NULL)
     PHP_FE(blake2s, NULL)
     {NULL, NULL, NULL}
 };
