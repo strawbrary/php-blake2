@@ -1,0 +1,8 @@
+ARG_ENABLE('blake2', 'blake2 support', 'no');
+
+if (PHP_BLAKE2 != 'no') {
+	AC_DEFINE('HAVE_BLAKE2', 1, 'blake2 support enabled');
+
+	EXTENSION('blake2', 'php_blake2.c', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1');
+	ADD_SOURCES('ext/blake2', 'blake2b-ref.c blake2s-ref.c', 'blake2');
+}
