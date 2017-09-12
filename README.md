@@ -38,6 +38,12 @@ string blake2 ( string $str [, int $outputSize = 64, string $key, bool $rawOutpu
 
 * Return value: A hex string containing the BLAKE2 hash of the input string
 
+```php
+string blake2b ( string $str [, int $outputSize = 64, string $key, bool $rawOutput = false ] )
+```
+
+is an alias to `blake2`
+
 
 ```php
 string blake2s ( string $str [, int $outputSize = 32, string $key, bool $rawOutput = false ] )
