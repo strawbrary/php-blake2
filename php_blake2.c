@@ -77,7 +77,7 @@ PHP_FUNCTION(blake2)
         RETURN_FALSE;
     }
 
-    char hashOutput[hashByteLength];
+    char* hashOutput = (char*) emalloc(hashByteLength);
 
     int result = blake2b(hashOutput, hashByteLength, data, dataByteLength, key, keyLength);
 
@@ -93,7 +93,7 @@ PHP_FUNCTION(blake2)
         RETURN_STRINGL(hashOutput, hashByteLength, 1);
 #endif
     } else {
-        char hex[hashByteLength * 2 + 1];
+        char* hex = (char*) emalloc(hashByteLength * 2 + 1);
         php_hash_bin2hex(hex, (unsigned char *) hashOutput, hashByteLength);
         hex[hashByteLength * 2] = '\0';
 
@@ -102,7 +102,11 @@ PHP_FUNCTION(blake2)
 #else
         RETURN_STRING(hex, 1);
 #endif
+
+        efree(hex);
     }
+
+    efree(hashOutput);
 }
 
 PHP_FUNCTION(blake2s)
@@ -143,7 +147,7 @@ PHP_FUNCTION(blake2s)
         RETURN_FALSE;
     }
 
-    char hashOutput[hashByteLength];
+    char* hashOutput = (char*) emalloc(hashByteLength);
 
     int result = blake2s(hashOutput, hashByteLength, data, dataByteLength, key, keyLength);
 
@@ -159,7 +163,7 @@ PHP_FUNCTION(blake2s)
         RETURN_STRINGL(hashOutput, hashByteLength, 1);
 #endif
     } else {
-        char hex[hashByteLength * 2 + 1];
+        char* hex = (char*) emalloc(hashByteLength * 2 + 1);
         php_hash_bin2hex(hex, (unsigned char *) hashOutput, hashByteLength);
         hex[hashByteLength * 2] = '\0';
 
@@ -168,5 +172,9 @@ PHP_FUNCTION(blake2s)
 #else
         RETURN_STRING(hex, 1);
 #endif
+
+        efree(hex);
     }
+
+    efree(hashOutput);
 }
