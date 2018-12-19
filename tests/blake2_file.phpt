@@ -1,5 +1,5 @@
 --TEST--
-Verify BLAKE2 file output
+Verify blake2_file output
 --SKIPIF--
 <?php if (!extension_loaded("blake2")) print "skip"; ?>
 --FILE--
