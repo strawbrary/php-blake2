@@ -56,6 +56,21 @@ string blake2s ( string $str [, int $outputSize = 32, string $key, bool $rawOutp
 
 * Return value: A hex string containing the BLAKE2s hash of the input string
 
+```php
+string blake2_file ( string $filename [, bool $rawOutput = false ] )
+```
+
+* $filename: The filename of the file to hash
+* $rawOutput: If set to true, then the hash is returned in raw binary format
+
+* Return value: A hex string containing the BLAKE2 hash of the input file
+
+```php
+string b2sum ( string $filename [, bool $rawOutput = false ] )
+```
+
+is an alias to `blake2_file`
+
 
 Examples
 --------
@@ -83,6 +98,12 @@ echo blake2s('');
 ```
 
 Outputs : 69217a3079908094e11121d042354a7c1f55b6482ca1a51e1b250dfd1ed0eef9
+
+```php
+echo b2sum('tests/sample.txt');
+```
+
+Outputs : a61b779ff667fbcc4775cbb02cd0763b9b5312fe6359a44a003f582ce6897c81a38a876122ce91dfec547d582fe269f6ea9bd291b60bccf95006dac10a4316f2
 
 More Info
 ---------
