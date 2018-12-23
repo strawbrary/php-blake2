@@ -15,6 +15,8 @@ zend_function_entry blake2_functions[] = {
     PHP_FE(blake2, NULL)
     PHP_FALIAS(blake2b, blake2, NULL)
     PHP_FE(blake2s, NULL)
+    PHP_FE(blake2_file, NULL)
+    PHP_FALIAS(b2sum, blake2_file, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -173,6 +175,71 @@ PHP_FUNCTION(blake2s)
         RETURN_STRING(hex, 1);
 #endif
 
+        efree(hex);
+    }
+
+    efree(hashOutput);
+}
+
+PHP_FUNCTION(blake2_file)
+{
+#if ZEND_MODULE_API_NO >= 20151012
+    zend_long hashByteLength = BLAKE2B_OUTBYTES;
+    size_t dataByteLength;
+#else
+    long hashByteLength = BLAKE2B_OUTBYTES;
+    int dataByteLength;
+#endif
+
+    char          *data;
+    int           rawOutput = 0;
+
+    php_stream    *stream;
+    int           n;
+    unsigned char buf[1024];
+
+    blake2b_state S[1];
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "p|b", &data, &dataByteLength, &rawOutput) == FAILURE) {
+        return;
+    }
+
+    stream = php_stream_open_wrapper(data, "rb", REPORT_ERRORS, NULL);
+    if (!stream) {
+        RETURN_FALSE;
+    }
+
+    char* hashOutput = (char*) emalloc(hashByteLength);
+
+    blake2b_init(S, hashByteLength);
+
+    while ((n = php_stream_read(stream, buf, sizeof(buf))) > 0) {
+        blake2b_update(S, (const uint8_t *)buf, n);
+    }
+
+    blake2b_final(S, hashOutput, hashByteLength);
+
+    php_stream_close(stream);
+
+    if (n<0) {
+        RETURN_FALSE;
+    }
+
+    if (rawOutput) {
+#if ZEND_MODULE_API_NO >= 20151012
+        RETURN_STRINGL(hashOutput, hashByteLength);
+#else
+        RETURN_STRINGL(hashOutput, hashByteLength, 1);
+#endif
+    } else {
+        char* hex = (char*) emalloc(hashByteLength * 2 + 1);
+        php_hash_bin2hex(hex, (unsigned char *) hashOutput, hashByteLength);
+        hex[hashByteLength * 2] = '\0';
+#if ZEND_MODULE_API_NO >= 20151012
+        RETURN_STRING(hex);
+#else
+        RETURN_STRING(hex, 1);
+#endif
         efree(hex);
     }
 
